@@ -1,16 +1,16 @@
 import create from 'zustand'
 import { persist } from 'zustand/middleware'
 
-type BearStore = {
-  bears: number
-  increasePopulation: () => void
-  removeAllBears: () => void
+type AuthStore = {
+  user?: string
+  login: (username: string) => void
+  logout: () => void
 }
 
-export const useAuthStore = create<BearStore>()(
+export const useAuthStore = create<AuthStore>()(
   persist(set => ({
-    bears: 0,
-    increasePopulation: () => set(state => ({ bears: state.bears + 1 })),
-    removeAllBears: () => set({ bears: 0 }),
+    user: undefined,
+    login: (username: string) => set(state => ({ user: username })),
+    logout: () => set({ user: undefined }),
   })),
 )
