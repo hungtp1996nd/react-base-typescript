@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useAuthStore } from './store'
 import logo from './logo.svg'
 import './App.css'
 
 function App() {
   const [lang, setLang] = useState('en')
   const { t, i18n } = useTranslation()
+
+  const { bears, increasePopulation } = useAuthStore()
+
   const changeLanguage = () => {
     i18n.changeLanguage('vi')
   }
@@ -28,6 +32,10 @@ function App() {
         >
           Learn React
         </a>
+        <span>{bears}</span>
+        <div className="cursor-pointer" onClick={increasePopulation}>
+          Change bears
+        </div>
       </header>
       <button
         onClick={changeLanguage}
