@@ -10,7 +10,9 @@ type AuthStore = {
 export const useAuthStore = create<AuthStore>()(
   persist(set => ({
     user: undefined,
-    login: (username: string) => set(state => ({ user: username })),
+    login: (username: string) => {
+      set({ user: username })
+    },
     logout: () => set({ user: undefined }),
   })),
 )

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Navigate } from 'react-router-dom'
+import styled from 'styled-components'
 import { useAuthStore } from './store'
 import logo from './logo.svg'
 import './App.css'
@@ -9,14 +10,11 @@ function App() {
   const [lang, setLang] = useState('en')
   const { t, i18n } = useTranslation()
 
-  const { user, login, logout } = useAuthStore()
+  const { user, logout } = useAuthStore()
 
-  const changeLanguage = () => {
-    i18n.changeLanguage('vi')
-  }
   useEffect(() => {
     i18n.changeLanguage(lang)
-  }, [lang])
+  }, [lang, i18n])
   if (!user) return <Navigate to="/auth" replace />
   return (
     <div className="App">
@@ -35,13 +33,8 @@ function App() {
           Learn React
         </a>
       </header>
-      <button
-        onClick={changeLanguage}
-        type="button"
-        className="text-white absolute top-0"
-      >
-        Change Vietnamese language
-      </button>
+      <WelcomeUser>{`Welcome ${user}`}</WelcomeUser>
+      <Logout onClick={logout}>Logout</Logout>
       <select
         value={lang}
         onChange={e => setLang(e.target.value)}
@@ -55,3 +48,12 @@ function App() {
 }
 
 export default App
+
+const WelcomeUser = styled.span.attrs({
+  className: 'absolute text-white top-0 right-24',
+})``
+
+const Logout = styled.span.attrs({
+  className:
+    'absolute top-0 right-0 text-lime-600 underline cursor-pointer underline-offset-1',
+})``

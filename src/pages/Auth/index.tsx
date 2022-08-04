@@ -1,6 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Navigate } from 'react-router-dom'
+import { useAuthStore } from '../../store'
 
 const Auth = () => {
+  const [username, setUsername] = useState('')
+  const { login, user } = useAuthStore()
+  if (user) return <Navigate to="/" replace />
   return (
     <section className="relative w-full min-h-screen bg-black text-red-500">
       <h1 className="text-4xl p-4 font-bold tracking-wide">Contact</h1>
@@ -85,7 +90,8 @@ const Auth = () => {
               <span>Name</span>
               <input
                 type="text"
-                id="name"
+                value={username}
+                onChange={e => setUsername(e.target.value)}
                 className="px-3 py-2 bg-gray-800 border border-gray-900 focus:border-red-500 focus:outline-none focus:bg-gray-800 focus:text-red-500"
                 autoComplete="off"
               />
@@ -103,6 +109,7 @@ const Auth = () => {
           <div className="w-full pt-3">
             <button
               type="submit"
+              onClick={() => login(username)}
               className="w-full bg-gray-900 border border-red-500 px-4 py-2 transition duration-50 focus:outline-none font-semibold hover:bg-red-500 hover:text-white text-xl cursor-pointer"
             >
               Send
