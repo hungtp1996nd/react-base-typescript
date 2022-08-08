@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
+import { Layout } from './components/Layout'
 import Spinner from './components/Spinner'
-import Header from './pages/Header'
 import { useAuthStore } from './store'
 import './App.css'
 import 'react-toastify/dist/ReactToastify.css'
@@ -17,25 +17,26 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
-      <Routes>
-        <Route
-          index
-          element={
-            <Suspense fallback={<Spinner />}>
-              <Content />
-            </Suspense>
-          }
-        />
-        <Route
-          path="/pokemons"
-          element={
-            <Suspense fallback={<Spinner />}>
-              <Pokemons />
-            </Suspense>
-          }
-        />
-      </Routes>
+      <Layout>
+        <Routes>
+          <Route
+            index
+            element={
+              <Suspense fallback={<Spinner />}>
+                <Content />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/pokemons"
+            element={
+              <Suspense fallback={<Spinner />}>
+                <Pokemons />
+              </Suspense>
+            }
+          />
+        </Routes>
+      </Layout>
       <ToastContainer />
     </div>
   )
