@@ -1,9 +1,11 @@
 import React, { Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
 import Spinner from './components/Spinner'
 import Header from './pages/Header'
 import { useAuthStore } from './store'
 import './App.css'
+import 'react-toastify/dist/ReactToastify.css'
 
 const Content = React.lazy(() => import('./pages/Content'))
 const Pokemons = React.lazy(() => import('./pages/Pokemon'))
@@ -34,6 +36,7 @@ function App() {
           }
         />
       </Routes>
+      <ToastContainer />
     </div>
   )
 }
