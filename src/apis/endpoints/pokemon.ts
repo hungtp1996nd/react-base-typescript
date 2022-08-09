@@ -20,6 +20,7 @@ type PokemonResponse = {
   get: AxiosResponse<Pokemon[]>
   getOne: AxiosResponse<Pokemon>
   create: AxiosResponse<Pokemon>
+  delete: AxiosResponse<Pokemon>
 }
 
 // for get action
@@ -31,6 +32,7 @@ type PokemonQueryKey = {
 // for mutation action
 type PokemonVariables = {
   create: PokemonCreate
+  delete: number
 }
 
 type PokemonAPI = {
@@ -40,12 +42,17 @@ type PokemonAPI = {
     PokemonResponse['create'],
     PokemonVariables['create']
   >
+  delete: MutationFunction<
+    PokemonResponse['delete'],
+    PokemonVariables['delete']
+  >
 }
 
 const pokemon: PokemonAPI = {
   get: () => request.get('pokemons'),
   getOne: ({ queryKey: [, id] }) => request.get(`pokemons/${id}`),
   create: data => request.post('pokemons', data),
+  delete: id => request.delete(`pokemons/${id}`),
 }
 
 export const useGetPokemonQuery = (
@@ -64,3 +71,11 @@ export const useCreatePokemonMutation = (
     PokemonVariables['create']
   >,
 ) => useMutation(['createPokemon'], pokemon.create, options)
+
+export const useDeletePokemonMutation = (
+  options?: MutationOptions<
+    PokemonResponse['delete'],
+    unknown,
+    PokemonVariables['delete']
+  >,
+) => useMutation(['deletePokemon'], pokemon.delete, options)

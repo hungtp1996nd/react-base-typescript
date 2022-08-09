@@ -1,20 +1,42 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import styled from 'styled-components'
 import { useQueryClient } from '@tanstack/react-query'
-import { useCreatePokemonMutation, useGetPokemonQuery } from '../../apis'
+import {
+  useCreatePokemonMutation,
+  useDeletePokemonMutation,
+  useGetPokemonQuery,
+} from '../../apis'
 import Spinner from '../../components/Spinner'
 
 const Pokemons = () => {
   const [value, setValue] = useState('')
   const queryClient = useQueryClient()
+  const { t } = useTranslation()
 
   const { data: pokemons, isLoading } = useGetPokemonQuery()
+
   const { mutate: createPokemon } = useCreatePokemonMutation({
     onSuccess: () => {
-      toast('🦄 Wow so easy!, created pokemon', {
+      toast(t('pokemon.create'), {
         position: 'top-right',
-        autoClose: 5000,
+        autoClose: 800,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      })
+      queryClient.invalidateQueries(['getPokemons'])
+    },
+  })
+
+  const { mutate: deletePokemon } = useDeletePokemonMutation({
+    onSuccess: () => {
+      toast(t('pokemon.delete'), {
+        position: 'top-right',
+        autoClose: 800,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -46,7 +68,22 @@ const Pokemons = () => {
         Add pokemon
       </PokemonButton>
       {pokemons?.data.map(pokemon => {
-        return <li key={pokemon.id}>{pokemon.name}</li>
+        return (
+          <div
+            className="flex justify-center items-center gap-10"
+            key={pokemon.id}
+          >
+            <li key={pokemon.id} className="my-4 mx-8">
+              {pokemon.name}
+            </li>
+            <RemoveButton
+              type="button"
+              onClick={() => deletePokemon(pokemon.id)}
+            >
+              Remove
+            </RemoveButton>
+          </div>
+        )
       })}
     </div>
   )
@@ -62,4 +99,9 @@ const PokemonInput = styled.input.attrs({
 const PokemonButton = styled.button.attrs({
   className:
     'px-6 py-1 text-sm rounded shadow bg-emerald-100 hover:bg-emerald-200 text-emerald-500',
+})``
+
+const RemoveButton = styled.button.attrs({
+  className:
+    'bg-red-400 hover:bg-red-300 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-400 rounded',
 })``
