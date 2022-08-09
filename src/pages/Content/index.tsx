@@ -28,7 +28,7 @@ export default Content
 
 const AppHeader = styled.header.attrs({
   className:
-    'flex flex-column items-center justify-center text-white min-h-screen',
+    'flex flex-column items-center justify-center text-white min-h-[inherit]',
 })`
   background-color: #282c34;
   font-size: calc(10px + 2vmin);
